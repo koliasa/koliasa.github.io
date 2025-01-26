@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KOLIASA</title>
+    <meta
+      name="description"
+      content="KOLIASA – інновації, лідерство, та ідеї, які завжди попереду."
+    />
+    <meta
+      name="keywords"
+      content="KOLIASA, Коляса, інновації, лідерство, технології, логотип, LinkedIn Koliasa"
+    />
+    <meta name="author" content="KOLIASA" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="KOLIASA" />
+    <meta
+      property="og:description"
+      content="Лідер у сфері інновацій та технологій. Дізнайтесь більше на LinkedIn – https://www.linkedin.com/in/koliasa/."
+    />
+    <meta property="og:url" content="https://koliasa.github.io/" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://koliasa.github.io/koliasa-logo.jpg"
+    />
+    <meta property="og:locale" content="uk_UA" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="KOLIASA" />
+    <meta
+      name="twitter:description"
+      content="Лідер у сфері інновацій та технологій. Підпишіться на мій LinkedIn – https://www.linkedin.com/in/koliasa/."
+    />
+    <meta
+      name="twitter:image"
+      content="https://koliasa.github.io/koliasa-logo.jpg"
+    />
+    <link rel="canonical" href="https://koliasa.github.io/" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Montserrat", sans-serif;
+        background: radial-gradient(circle, #001f54 0%, #000 70%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+      .logo-text {
+        font-size: 10vw;
+        font-weight: 700;
+        display: flex;
+        gap: 1vw;
+        background: linear-gradient(90deg, #0057b7, #ffd700);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: color 0.3s ease, background 0.3s ease;
+      }
+      .logo-text span {
+        cursor: pointer;
+      }
+      .logo-text span:hover {
+        color: hsl(calc(360 * var(--hue)), 70%, 60%);
+        --hue: calc(1 + var(--hue, 0));
+      }
+      @media (max-width: 768px) {
+        .logo-text {
+          font-size: 14vw;
+          gap: 2vw;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="logo">
+      <div class="logo-text">
+        <span>K</span>
+        <span>O</span>
+        <span>L</span>
+        <span>I</span>
+        <span>A</span>
+        <span>S</span>
+        <span>A</span>
+      </div>
+    </div>
+    <script>
+      document.querySelectorAll(".logo-text span").forEach((letter) => {
+        letter.addEventListener("mouseenter", () => {
+          letter.style.color = `hsl(${Math.random() * 360}, 70%, 60%)`;
+        });
+        letter.addEventListener("mouseleave", () => {
+          letter.style.color = "transparent";
+        });
+      });
+    </script>
+  </body>
+</html>
