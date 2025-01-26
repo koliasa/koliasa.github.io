@@ -19,7 +19,13 @@
     <meta name="twitter:description" content="Підпишіться на мій LinkedIn – https://www.linkedin.com/in/koliasa/." />
     <meta name="twitter:image" content="https://koliasa.github.io/koliasa-logo.jpg" />
     <link rel="canonical" href="https://koliasa.github.io/" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      as="style" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" />
+    </noscript>
     <style>
       body {
         margin: 0;
@@ -32,6 +38,7 @@
         min-height: 100vh;
         overflow: hidden;
       }
+
       .logo-text {
         font-size: 10vw;
         font-weight: 700;
@@ -42,13 +49,16 @@
         color: transparent;
         transition: color 0.3s ease, background 0.3s ease;
       }
+
       .logo-text span {
         cursor: pointer;
       }
+
       .logo-text span:hover {
         color: hsl(calc(360 * var(--hue)), 70%, 60%);
         --hue: calc(1 + var(--hue, 0));
       }
+
       @media (max-width: 768px) {
         .logo-text {
           font-size: 14vw;
