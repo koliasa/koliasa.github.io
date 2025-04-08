@@ -26,14 +26,48 @@
     <noscript>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" />
     </noscript>
-    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Montserrat", sans-serif;
+        background: radial-gradient(circle, #001f54 0%, #000 70%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      .logo-text {
+        font-size: 10vw;
+        font-weight: 700;
+        display: flex;
+        gap: 1vw;
+        background: linear-gradient(90deg, #0057b7, #ffd700);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: color 0.3s ease, background 0.3s ease;
+      }
+
+      .logo-text span {
+        cursor: pointer;
+      }
+
+      .logo-text span:hover {
+        color: hsl(calc(360 * var(--hue)), 70%, 60%);
+        --hue: calc(1 + var(--hue, 0));
+      }
+
+      @media (max-width: 768px) {
+        .logo-text {
+          font-size: 14vw;
+          gap: 2vw;
+        }
+      }
+    </style>
   </head>
   <body>
-    <a-hole>
-      <canvas class="js-canvas"></canvas>
-      <div class="aura"></div>
-      <div class="overlay"></div>
-    </a-hole>
     <div class="logo">
       <div class="logo-text">
         <span>K</span>
@@ -45,6 +79,15 @@
         <span>A</span>
       </div>
     </div>
-    <script type="module" src="script.js"></script>
+    <script>
+      document.querySelectorAll(".logo-text span").forEach((letter) => {
+        letter.addEventListener("mouseenter", () => {
+          letter.style.color = `hsl(${Math.random() * 360}, 70%, 60%)`;
+        });
+        letter.addEventListener("mouseleave", () => {
+          letter.style.color = "transparent";
+        });
+      });
+    </script>
   </body>
 </html>
